@@ -24,21 +24,19 @@ def encontrar():
 			comprado = ativos[i]
 			vendido = ativos[j]
 
-			media_c = ((df[comprado].sum()) / dias)
-			media_v = ((df[vendido].sum()) / dias)
+			correlacao = df[comprado].corr(df[vendido], method='pearson')
 
-			razao = (media_c / media_v)
-
-			if (razao >= 0.8):
-				print("[!] Razão encontrada: %s/%s -- %.3f" % (comprado, vendido, razao))
+			if (correlacao >= 0.8):
+				print("[!] Razão encontrada: %s/%s -- %.3f" % (comprado, vendido, correlacao))
 			else:
 				continue
 
 if __name__ == "__main__":
-	mov = ""
-	mov += random.choice("-\|/-\|/")
-	for m in mov:
-		sys.stdout.write("[%s] Encontrando razões maiores ou iguais a 0.8... \r" % m)
-		sys.stdout.flush()
+#	mov = ""
+#	mov += random.choice("-\|/-\|/")
 
 	encontrar()
+
+#	for m in mov:
+#		sys.stdout.write("[%s] Encontrando razões maiores ou iguais a 0.8...		\r" % m)
+#		sys.stdout.flush()
