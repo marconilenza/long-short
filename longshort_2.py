@@ -18,3 +18,7 @@ dp_v = df[vendido].std()
 print("[+] Razão entre os preços dos ativos: %.4f" % correlacao)
 print("[+] Desvio-padrão de %s: %.3f" % (comprado, dp_c))
 print("[+] Desvio-padrão de %s: %.3f" % (vendido, dp_v))
+
+tempo = len(df.index)
+n_acoes = len(df.columns)
+print("[!] Período analisado: %d dias" % tempo)
