@@ -1,24 +1,34 @@
+# -*- CODING: UTF-8 -*-
+
 import pandas as pd
 import sys
+import random
+
+ativos = ["ABEV3", "BBAS3", "BBDC3", "BBDC4", "BRKM5", "CIEL3", "CMIG4",
+		"CSNA3", "FJTA4", "GGBR4", "IGTA3", "ITSA3", "ITSA4",
+		"ITUB4", "JBSS3", "KROT3", "LAME4", "LREN3", "PCAR4",
+		"PETR3", "PETR4", "RADL3", "RAIL3", "RENT3", "SAPR4"]
 
 df = pd.read_excel('Database.xlsx')
 
-comprado = str(input("[!] Digite o nome da ação (long): ")).upper()
-vendido = str(input("[!] Digite o nome da ação (short): ")).upper()
+def encontrar():
 
-try:
-	correlacao = df[comprado].corr(df[vendido])
-except KeyError:
-	print("[-] Algum dos ativos não consta na planilha.")
-	sys.exit(1)
+	for i in range(len(ativos)):
+		for j in range(i+1, len(ativos)):
 
-dp_c = df[comprado].std()
-dp_v = df[vendido].std()
+			comprado = ativos[i]
+			vendido = ativos[j]
 
-print("[+] Razão entre os preços dos ativos: %.4f" % correlacao)
-print("[+] Desvio-padrão de %s: %.3f" % (comprado, dp_c))
-print("[+] Desvio-padrão de %s: %.3f" % (vendido, dp_v))
+			correlacao = df[comprado].corr(df[vendido], method='pearson')
 
-tempo = len(df.index)
-n_acoes = len(df.columns)
-print("[!] Período analisado: %d dias" % tempo)
+			if (correlacao >= 0.8):
+				print("[!] Razão encontrada: %s/%s -- %.3f" % (comprado, vendido, correlacao))
+			else:
+				continue
+
+if __name__ == "__main__":
+	encontrar()
+	tempo = len(df.index)
+	n_acoes = len(df.columns)
+	print("[!] Período analisado: %d dias" % tempo)
+	print("[!] Número de ações comparadas: %d" % n_acoes)
